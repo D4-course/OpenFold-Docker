@@ -27,7 +27,6 @@ from openfold.model import model
 from openfold.np import protein
 from openfold.np.relax import relax
 from openfold.np.relax import utils
-from openfold.utils.import_weights import import_jax_weights_
 from openfold.utils.tensor_utils import tensor_tree_map
 
 

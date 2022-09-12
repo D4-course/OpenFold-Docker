@@ -53,9 +53,9 @@ UNEDITED_SEQUENCE = ""
 with open("/openfold/input.txt", encoding="utf-8") as f:
     UNEDITED_SEQUENCE = f.readline()
 
-def format_input(input):
+def format_input(unformatted_input):
     """Function to format the input sequence"""
-    formatted_input = input.translate(str.maketrans("", "", " \n\t")).upper()
+    formatted_input = unformatted_input.translate(str.maketrans("", "", " \n\t")).upper()
     aatypes = set("ACDEFGHIKLMNPQRSTVWY")  # 20 standard aatypes
 
     if not set(formatted_input).issubset(aatypes):
@@ -112,7 +112,7 @@ for f in futures.as_completed(fs):
     break
 
 # --- Search against genetic databases ---
-with open("target.fasta", "wt") as f:
+with open("target.fasta", "wt", encoding="utf-8") as f:
     f.write(f">query\n{sequence}")
 
 # Run the search against chunks of genetic databases (since the genetic
@@ -380,7 +380,7 @@ with tqdm(total=len(model_names) + 1, bar_format=TQDM_BAR_FORMAT) as pbar:
 
         # Write out the prediction
         pred_output_path = os.path.join(OUTPUT_DIR, "selected_prediction.pdb")
-        with open(pred_output_path, "w") as f:
+        with open(pred_output_path, "w", encoding="utf-8") as f:
             f.write(relaxed_pdb)
 
         BEST_PDB = relaxed_pdb
@@ -392,7 +392,7 @@ with tqdm(total=len(model_names) + 1, bar_format=TQDM_BAR_FORMAT) as pbar:
 banded_b_factors = []
 for plddt in plddts[best_model_name]:
     for idx, (min_val, max_val, _) in enumerate(PLDDT_BANDS):
-        if plddt >= min_val and plddt <= max_val:
+        if min_val <= plddt <= max_val:
             banded_b_factors.append(idx)
             break
 banded_b_factors = np.array(banded_b_factors)[:, None] * final_atom_mask
@@ -499,5 +499,5 @@ if pae_outputs:
         indent=None,
         separators=(",", ":"),
     )
-    with open(pae_output_path, "w") as f:
+    with open(pae_output_path, "w", encoding="utf-8") as f:
         f.write(pae_data)

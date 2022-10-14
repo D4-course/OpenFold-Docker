@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 import py3Dmol
-import time
 from stmol import showmol
 
 def format_input(unformatted_input):

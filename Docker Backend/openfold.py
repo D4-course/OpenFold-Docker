@@ -93,9 +93,9 @@ def fetch(source):
 
 @app.get("/")
 def default():
-    return FileResponse(path="/openfold/main.py", filename="/openfold/main.py", media_type="text/octet-stream")
+    return FileResponse(path="/openfold/protein.pdf", filename="protein.pdf", media_type="text/octet-stream")
 
-@app.get("/sequence/{seq}")
+@app.post("/sequence/{seq}")
 def read_sequence(seq: str):
     # Get the sequence formatted
     sequence = format_input(seq)

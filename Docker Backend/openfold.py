@@ -91,9 +91,9 @@ def fetch(source):
     request.urlretrieve(TEST_URL_PATTERN.format(source))
     return source
 
-@app.get("/")
+@app.post("/default/")
 def default():
-    return FileResponse(path="/openfold/protein.pdf", filename="protein.pdf", media_type="text/octet-stream")
+    return FileResponse(path="/openfold/protein.pdb", filename="protein.pdb", media_type="text/octet-stream")
 
 @app.post("/sequence/{seq}")
 def read_sequence(seq: str):

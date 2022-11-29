@@ -20,11 +20,16 @@ def format_input(unformatted_input):
 st.sidebar.title('Openfold')
 ml = st.sidebar.form("Protein Model Generation")
 protein = format_input(ml.text_input('Enter a protein sequence'))
+fallback = ml.checkbox('Fallback to pre-executed output')
 generate = ml.form_submit_button("Generate Protein PDB")
 
 if generate and (protein is not None):
-    r = requests.post(url = "http://localhost:8000/sequence/" + protein)
-    st.sidebar.download_button('Click to download the file', r.content, file_name='protein.pdb')
+    if fallback:
+        r = requests.post(url = "http://localhost:8000/default/")
+        st.sidebar.download_button('Click to download the file', r.content, file_name='protein.pdb')
+    else:
+        r = requests.post(url = "http://localhost:8000/sequence/" + protein)
+        st.sidebar.download_button('Click to download the file', r.content, file_name='protein.pdb')
 
 # Color bands for visualizing plddt
 PLDDT_BANDS = [

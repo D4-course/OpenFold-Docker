@@ -22,6 +22,7 @@ ENV PATH /opt/conda/bin:$PATH
 COPY environment.yml /opt/openfold/environment.yml
 
 # installing into the base environment since the docker container wont do anything other than run openfold
+# RUN conda update -n base -c defaults conda
 RUN conda env update -n base --file /opt/openfold/environment.yml && conda clean --all
 
 RUN mkdir -m 777 --parents /tmp/ramdisk
@@ -51,6 +52,7 @@ RUN pip3 install -q ./openfold
 # RUN cd -
 
 COPY openfold.py /openfold/main.py
+COPY protein.pdb /openfold/protein.pdb
 
 RUN mkdir --parents /content/openfold/openfold/resources/openfold_params
 RUN aws s3 cp --no-sign-request --region us-east-1 s3://openfold/openfold_params /content/openfold/openfold/resources/openfold_params --recursive
